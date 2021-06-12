@@ -11,9 +11,12 @@ namespace Chess.Figures
         public int PositionY { get; set; }
         public bool BeingOnTheField { get; set; }
 
-        public abstract void GetStep(int x, int y);
+        public abstract void GetStep(int x, int y, bool[,] field);
 
-        
+        public abstract bool ChekingFreeSquaries(int x, int y, bool[,] field);
+        //public abstract void TakePiece(int x, int y);
+
+
 
 
 

@@ -14,11 +14,11 @@ namespace Chess.Figures
             PositionY = positionY;
             BeingOnTheField = beingOnTheField;
         }
-        public override void GetStep(int x, int y)
+        public override void GetStep(int x, int y, bool[,] field)
         {
             try
             {
-                if(PositionX-x == 1 && PositionY-1 == 1)
+                if(Math.Abs(PositionX-x) == 1 && Math.Abs(PositionY -y) == 1)
                 {
                     PositionX = x;
                     PositionY = y;
@@ -32,6 +32,8 @@ namespace Chess.Figures
                 Console.WriteLine(ex.Message);
             }
         }
+
+        
 
         public override string ToString()
         {
