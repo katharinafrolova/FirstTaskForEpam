@@ -10,26 +10,42 @@ namespace Chess.Figures.TypeOfFigures
 
         public Pawn(string color, int positionX, int positionY, bool beingOnTheField, bool firstStap)
         {
+            Name = "Pawn";
             FirstStap = firstStap;
             Color = color;
             PositionX = positionX;
             PositionY = positionY;
             BeingOnTheField = beingOnTheField;
         }
-        public override void GetStep(int x, int y, bool[,] field)
+        public override void GetStepOnField(int x, int y, bool[,] field)
         {
             try
             {
-                if (FirstStap == true && PositionX - x == 0 && (Math.Abs(PositionY - y) == 2 || Math.Abs(PositionY - y) == 1))
+                if (FirstStap == true && PositionX - x == 0 
+                    && ((PositionY - y == 2 && Color == "black") 
+                    || (PositionY - y == -2 && Color == "white") 
+                    || (PositionY - y == 1 && Color == "black") 
+                    || (PositionY - y == -1 && Color == "white")))
                 {
-                    PositionX = x;
-                    PositionY = y;
+                    if (ChekingFreeSquaries(x, y, field))
+                        PositionY = y;
+                    else
+                        throw new Exception("This piace doesn't walk through the others!");
                 }
-                else if (FirstStap == false && PositionX - x == 0 && Math.Abs(PositionY - y) == 1)
-                {
-                    PositionX = x;
-                    PositionY = y;
-                }
+                else if (FirstStap == false && PositionX - x == 0 && ((PositionY - y == 1 && Color == "black") 
+                                                                  || (PositionY - y == -1 && Color == "white")))
+                     {
+                        if (ChekingFreeSquaries(x, y, field))
+                            PositionY = y;
+                        else
+                            throw new Exception("This piace doesn't walk through the others!");
+                     }
+                else if (Math.Abs(PositionX - x) == 1 && ((PositionY - y == 1 && Color == "black")
+                                 || (PositionY - y == -1 && Color == "white")) && field[x, y] == true)
+                     {
+                        PositionX = x;
+                        PositionY = y;
+                     }
                 else
                     throw new Exception("Wrong move!");
 
@@ -39,6 +55,36 @@ namespace Chess.Figures.TypeOfFigures
                 Console.WriteLine(ex.Message);
             }
         }
+
+       
+
+        public bool ChekingFreeSquaries(int x, int y, bool[,] field)
+        {
+            bool result = true;
+            int i = 1;
+            if (Math.Abs(PositionY - y) >= 1)
+            {
+                if (PositionY > y)
+                    i = -1;
+                while (PositionY + i != y)
+                {
+                    if (field[PositionX, PositionY + i] == false)
+                    {
+                        result = false;
+                        break;
+                    }
+                    if (PositionY > y)
+                        i--;
+                    else if (PositionY < y)
+                        i++;
+                }
+                if (field[PositionX, y] == false)
+                    result = false;
+
+            }
+            return result;
+        }
+
 
         public override string ToString()
         {

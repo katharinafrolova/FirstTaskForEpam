@@ -8,12 +8,13 @@ namespace Chess.Figures.TypeOfFigures
     {
         public Knight(string color, int positionX, int positionY, bool beingOnTheField)
         {
+            Name = "Knight";
             Color = color;
             PositionX = positionX;
             PositionY = positionY;
             BeingOnTheField = beingOnTheField;
         }
-        public override void GetStep(int x, int y, bool[,] field)
+        public override void GetStepOnField(int x, int y, bool[,] field)
         {
             try
             {

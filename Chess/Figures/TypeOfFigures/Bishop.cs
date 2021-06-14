@@ -8,12 +8,13 @@ namespace Chess.Figures.TypeOfFigures
     {
         public Bishop(string color, int positionX, int positionY, bool beingOnTheField)
         {
+            Name = "Bishop";
             Color = color;
             PositionX = positionX;
             PositionY = positionY;
             BeingOnTheField = beingOnTheField;
         }
-        public override void GetStep(int x, int y, bool[,] field)
+        public override void GetStepOnField(int x, int y, bool[,] field)
         {
             try
             {
@@ -37,7 +38,7 @@ namespace Chess.Figures.TypeOfFigures
             }
         }
 
-        public override bool ChekingFreeSquaries(int x, int y, bool[,] field)
+        public bool ChekingFreeSquaries(int x, int y, bool[,] field)
         {
             bool result = true;
             int i = 1;

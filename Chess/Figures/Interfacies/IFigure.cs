@@ -6,7 +6,7 @@ namespace Chess.Figures
 {
     public interface IFigure
     {
-        public void GetStep(int x, int y, bool[,] field);
-        public abstract bool ChekingFreeSquaries(int x, int y, bool[,] field);
+        public void GetStepOnField(int x, int y, bool[,] field);
+        public int GetHashCode();
     }
 }
