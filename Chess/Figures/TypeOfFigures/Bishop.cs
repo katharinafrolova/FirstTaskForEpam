@@ -14,28 +14,27 @@ namespace Chess.Figures.TypeOfFigures
             PositionY = positionY;
             BeingOnTheField = beingOnTheField;
         }
-        public override void GetStepOnField(int x, int y, bool[,] field)
+        public override bool GetStepOnField(int x, int y, bool[,] field)
         {
-            try
+            bool eatingPiece = false;
+
+            if (Math.Abs(PositionX - x) == Math.Abs(PositionY - y))
             {
-                if (Math.Abs(PositionX - x) == Math.Abs(PositionY - y))
+                if (ChekingFreeSquaries(x, y, field))
                 {
-                    if(ChekingFreeSquaries(x,y,field))
-                    {
-                        PositionX = x;
-                        PositionY = y;
-                    }
-                    else
-                        throw new Exception("This piace doesn't walk through the others!");
+                    if (field[x, y] == false)
+                        eatingPiece = true;
+                    PositionX = x;
+                    PositionY = y;
                 }
                 else
-                    throw new Exception("Wrong move!");
+                    throw new Exception("This piace doesn't walk through the others!");
+            }
+            else
+                throw new Exception("Wrong move!");
 
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+
+            return eatingPiece;
         }
 
         public bool ChekingFreeSquaries(int x, int y, bool[,] field)
@@ -72,8 +71,11 @@ namespace Chess.Figures.TypeOfFigures
 
         public override string ToString()
         {
-            return ($"Color: {Color} \n  Position X: {PositionX.ToString()} \n Position Y: {PositionY.ToString()} \n Being on the field: {BeingOnTheField.ToString()} \n");
+            return ($"Color: {Color} \n  Position X: {PositionX.ToString()} \n Position Y: {PositionY.ToString()} \n Being on the Field: {BeingOnTheField.ToString()} \n");
         }
+
+        public override bool Equals(object obj) => obj is Bishop bishop && Name == bishop.Name && Color == bishop.Color && PositionX == bishop.PositionX && PositionY == bishop.PositionY;
+
         public override int GetHashCode()
         {
             int hashCode = -831015500;

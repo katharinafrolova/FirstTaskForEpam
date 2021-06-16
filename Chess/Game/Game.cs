@@ -8,21 +8,21 @@ namespace Chess.Game
 {
     public class Game
     {
-        Figure[,] field;
-        bool[,] map;
-        string winner;
+        public Figure[,] Field { get; set; }
+        public bool[,] Map { get; set; }
+        public string Winner { get; set; }
 
 
         public Game()
         {
-            winner = null;
-            field = new Figure[8,8];
-            map = new bool[8, 8];
+            Winner = null;
+            Field = new Figure[8,8];
+            Map = new bool[8, 8];
             for (int i = 0; i < 8; i++)
                 for (int j = 0; j < 8; j++)
                 {
-                    field[i, j] = null;
-                    map[i, j] = true;
+                    Field[i, j] = null;
+                    Map[i, j] = true;
                 }
                     
             PlaceЕhePiecesOnTheField("white");
@@ -36,26 +36,26 @@ namespace Chess.Game
             if (color == "white")
                 firstPositionY = 7;
 
-            field[firstPositionX, firstPositionY] = new Rook(color, firstPositionX, firstPositionY, true);
-            field[firstPositionX + 7, firstPositionY] = new Rook(color, firstPositionX + 7, firstPositionY, true);
-            map[firstPositionX, firstPositionY] = false;
-            map[firstPositionX + 7, firstPositionY] = false;
+            Field[firstPositionX, firstPositionY] = new Rook(color, firstPositionX, firstPositionY, true);
+            Field[firstPositionX + 7, firstPositionY] = new Rook(color, firstPositionX + 7, firstPositionY, true);
+            Map[firstPositionX, firstPositionY] = false;
+            Map[firstPositionX + 7, firstPositionY] = false;
 
-            field[firstPositionX + 1, firstPositionY] = new Knight(color, firstPositionX + 1, firstPositionY, true);
-            field[firstPositionX + 6, firstPositionY] = new Knight(color, firstPositionX + 6, firstPositionY, true);
-            map[firstPositionX + 1, firstPositionY] = false;
-            map[firstPositionX + 6, firstPositionY] = false;
+            Field[firstPositionX + 1, firstPositionY] = new Knight(color, firstPositionX + 1, firstPositionY, true);
+            Field[firstPositionX + 6, firstPositionY] = new Knight(color, firstPositionX + 6, firstPositionY, true);
+            Map[firstPositionX + 1, firstPositionY] = false;
+            Map[firstPositionX + 6, firstPositionY] = false;
 
 
-            field[firstPositionX + 2, firstPositionY] = new Bishop(color, firstPositionX + 2, firstPositionY, true);
-            field[firstPositionX + 5, firstPositionY] = new Bishop(color, firstPositionX + 5, firstPositionY, true);
-            map[firstPositionX + 2, firstPositionY] = false;
-            map[firstPositionX + 5, firstPositionY] = false;
+            Field[firstPositionX + 2, firstPositionY] = new Bishop(color, firstPositionX + 2, firstPositionY, true);
+            Field[firstPositionX + 5, firstPositionY] = new Bishop(color, firstPositionX + 5, firstPositionY, true);
+            Map[firstPositionX + 2, firstPositionY] = false;
+            Map[firstPositionX + 5, firstPositionY] = false;
 
-            field[firstPositionX + 3, firstPositionY] = new Queen(color, firstPositionX + 3, firstPositionY, true);
-            field[firstPositionX + 4, firstPositionY] = new Queen(color, firstPositionX + 4, firstPositionY, true);
-            map[firstPositionX + 3, firstPositionY] = false;
-            map[firstPositionX + 4, firstPositionY] = false;
+            Field[firstPositionX + 3, firstPositionY] = new Queen(color, firstPositionX + 3, firstPositionY, true);
+            Field[firstPositionX + 4, firstPositionY] = new Queen(color, firstPositionX + 4, firstPositionY, true);
+            Map[firstPositionX + 3, firstPositionY] = false;
+            Map[firstPositionX + 4, firstPositionY] = false;
 
 
             if (color == "white")
@@ -64,8 +64,8 @@ namespace Chess.Game
                 firstPositionY = 1;
             for (int i = 0; i < 8; i++)
             {
-                field[firstPositionX + i, firstPositionY] = new Pawn(color, firstPositionX + i, firstPositionY, true, true);
-                map[firstPositionX + i, firstPositionY] = false;
+                Field[firstPositionX + i, firstPositionY] = new Pawn(color, firstPositionX + i, firstPositionY, true, true);
+                Map[firstPositionX + i, firstPositionY] = false;
             }
 
         }
@@ -80,9 +80,16 @@ namespace Chess.Game
 
         public bool CheckForAnEndlessGame()
         {
-            bool result = true;
-            
-            return result;
+            bool endlessGame = true;
+
+            for (int i = 0; i < 8; i++)
+                for (int j = 0; j < 8; j++)
+                {
+                    if (Field[i, j].Name != null || Field[i, j].Name != "King")
+                        endlessGame = false;
+                }
+
+            return endlessGame;
         }
 
         public bool StepOfSomePlayer(Player player, int StartX, int StartY, int FinishX, int FinishY)
@@ -90,24 +97,24 @@ namespace Chess.Game
             bool endOfGame = false;
             try
             {
-                if(player.ColorOfPlayersPiace != field[StartX, StartY].Color )
+                if(player.ColorOfPlayersPiace != Field[StartX, StartY].Color )
                     throw new Exception("This piece isn't your!");
 
-                if(field[FinishX, FinishY] != null)
+                if(Field[FinishX, FinishY] != null)
                 {
-                    if (field[FinishX, FinishY].Name == "King")
+                    if (Field[FinishX, FinishY].Name == "King")
                     {
                         endOfGame = true;
-                        winner = player.Name;
+                        Winner = player.Name;
                     }
                         
                     EatingSomePiece(StartX, StartY, FinishX, FinishY);
-                    player.AddStepInHistory(FinishX, FinishY, field[FinishX, FinishY].Name);
+                    player.AddStepInHistory(FinishX, FinishY, Field[FinishX, FinishY].Name);
                 }
                 else
                 {
-                    field[StartX, StartY].GetStepOnField(FinishX, FinishY, map);
-                    player.AddStepInHistory(FinishX, FinishY, field[FinishX, FinishY].Name);
+                    Field[StartX, StartY].GetStepOnField(FinishX, FinishY, Map);
+                    player.AddStepInHistory(FinishX, FinishY, Field[FinishX, FinishY].Name);
                 }
 
             }
@@ -123,9 +130,9 @@ namespace Chess.Game
        public void EatingSomePiece(int StartX, int StartY, int FinishX, int FinishY)
        {
             
-            field[StartX, StartY].GetStepOnField(FinishX, FinishY, map);
-            field[FinishX, FinishY] = field[StartX, StartY];
-            field[StartX, StartY] = null;
+            Field[StartX, StartY].GetStepOnField(FinishX, FinishY, Map);
+            Field[FinishX, FinishY] = Field[StartX, StartY];
+            Field[StartX, StartY] = null;
        }
 
     }

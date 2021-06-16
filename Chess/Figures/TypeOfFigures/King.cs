@@ -15,31 +15,36 @@ namespace Chess.Figures
             PositionY = positionY;
             BeingOnTheField = beingOnTheField;
         }
-        public override void GetStepOnField(int x, int y, bool[,] field)
-        {
-            try
-            {
-                if(Math.Abs(PositionX-x) == 1 && Math.Abs(PositionY -y) == 1)
-                {
-                    PositionX = x;
-                    PositionY = y;
-                }
-                else
-                    throw new Exception("Wrong move!");
 
-            }
-            catch(Exception ex)
+        public King()
+        { }
+        public override bool GetStepOnField(int x, int y, bool[,] field)
+        {
+            bool eatingPiece = false;
+
+            if (Math.Abs(PositionX - x) == 1 && Math.Abs(PositionY - y) == 1 || (PositionX - x == 1 && PositionY - y == 0) || (PositionX - x == 0 && PositionY - y == 1))
             {
-                Console.WriteLine(ex.Message);
+                if (field[x, y] == false)
+                    eatingPiece = true;
+                PositionX = x;
+                PositionY = y;
             }
+            else
+                throw new Exception("Wrong move!");
+
+
+            return eatingPiece;
         }
 
         
 
         public override string ToString()
         {
-            return ($"Color: {Color} \n  Position X: {PositionX.ToString()} \n Position Y: {PositionY.ToString()} \n Being on the field: {BeingOnTheField.ToString()} \n");
+            return ($"Color: {Color} \n  Position X: {PositionX.ToString()} \n Position Y: {PositionY.ToString()} \n Being on the Field: {BeingOnTheField.ToString()} \n");
         }
+
+        public override bool Equals(object obj) => obj is King king && Name == king.Name && Color == king.Color && PositionX == king.PositionX && PositionY == king.PositionY ;
+
         public override int GetHashCode()
         {
             int hashCode = -831015500;

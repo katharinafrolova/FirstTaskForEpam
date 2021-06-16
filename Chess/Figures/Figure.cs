@@ -12,20 +12,15 @@ namespace Chess.Figures
         public int PositionY { get; set; }
         public bool BeingOnTheField { get; set; }
 
-        public abstract void GetStepOnField(int x, int y, bool[,] field);
+        public abstract bool GetStepOnField(int x, int y, bool[,] field);
 
         public object Clone()
         {
             return this.MemberwiseClone();
         }
+
         //public abstract int GetHashCode();
         //public abstract string ToString();
-
-        
-
-
-
-
 
     }
 }

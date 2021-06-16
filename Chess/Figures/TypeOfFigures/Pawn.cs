@@ -17,43 +17,39 @@ namespace Chess.Figures.TypeOfFigures
             PositionY = positionY;
             BeingOnTheField = beingOnTheField;
         }
-        public override void GetStepOnField(int x, int y, bool[,] field)
+        public override bool GetStepOnField(int x, int y, bool[,] field)
         {
-            try
-            {
-                if (FirstStap == true && PositionX - x == 0 
+            bool eatingPiece = false;
+            if (FirstStap == true && PositionX - x == 0 
                     && ((PositionY - y == 2 && Color == "black") 
                     || (PositionY - y == -2 && Color == "white") 
                     || (PositionY - y == 1 && Color == "black") 
                     || (PositionY - y == -1 && Color == "white")))
-                {
-                    if (ChekingFreeSquaries(x, y, field))
-                        PositionY = y;
-                    else
-                        throw new Exception("This piace doesn't walk through the others!");
-                }
-                else if (FirstStap == false && PositionX - x == 0 && ((PositionY - y == 1 && Color == "black") 
-                                                                  || (PositionY - y == -1 && Color == "white")))
-                     {
-                        if (ChekingFreeSquaries(x, y, field))
-                            PositionY = y;
-                        else
-                            throw new Exception("This piace doesn't walk through the others!");
-                     }
-                else if (Math.Abs(PositionX - x) == 1 && ((PositionY - y == 1 && Color == "black")
-                                 || (PositionY - y == -1 && Color == "white")) && field[x, y] == true)
-                     {
-                        PositionX = x;
-                        PositionY = y;
-                     }
-                else
-                    throw new Exception("Wrong move!");
-
-            }
-            catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                if (ChekingFreeSquaries(x, y, field))
+                    PositionY = y;
+                else
+                    throw new Exception("This piace doesn't walk through the others!");
             }
+            else if (FirstStap == false && PositionX - x == 0 && ((PositionY - y == 1 && Color == "black") 
+                                                                  || (PositionY - y == -1 && Color == "white")))
+                 {
+                     if (ChekingFreeSquaries(x, y, field))
+                         PositionY = y;
+                     else
+                         throw new Exception("This piace doesn't take others on straight!");
+                 }
+            else if (Math.Abs(PositionX - x) == 1 && ((PositionY - y == 1 && Color == "black")
+                                 || (PositionY - y == -1 && Color == "white")) && field[x, y] == false)
+                 {
+                     eatingPiece = true;
+                     PositionX = x;
+                     PositionY = y;
+                 }
+            else
+                throw new Exception("Wrong move!");
+
+            return eatingPiece;
         }
 
        
@@ -88,8 +84,11 @@ namespace Chess.Figures.TypeOfFigures
 
         public override string ToString()
         {
-            return ($"Color: {Color} \n  Position X: {PositionX.ToString()} \n Position Y: {PositionY.ToString()} \n Being on the field: {BeingOnTheField.ToString()} \n");
+            return ($"Color: {Color} \n  Position X: {PositionX.ToString()} \n Position Y: {PositionY.ToString()} \n Being on the Field: {BeingOnTheField.ToString()} \n");
         }
+
+        public override bool Equals(object obj) => obj is Pawn pawn && Name == pawn.Name && Color == pawn.Color && PositionX == pawn.PositionX && PositionY == pawn.PositionY && BeingOnTheField == pawn.BeingOnTheField;
+
         public override int GetHashCode()
         {
             int hashCode = -831015500;

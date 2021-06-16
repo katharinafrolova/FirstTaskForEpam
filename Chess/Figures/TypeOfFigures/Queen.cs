@@ -15,38 +15,41 @@ namespace Chess.Figures.TypeOfFigures
             PositionY = positionY;
             BeingOnTheField = beingOnTheField;
         }
-        public override void GetStepOnField(int x, int y, bool[,] field)
+
+
+        public override bool GetStepOnField(int x, int y, bool[,] field)
         {
-            try
+            bool eatingPiece = false;
+
+            if (PositionX - x != 0 && PositionY - y == 0 || PositionX - x == 0 && PositionY - y != 0)
             {
-                if (PositionX - x != 0 && PositionY - y == 0 || PositionX - x == 0 && PositionY - y != 0)
+                if (ChekingFreeSquariesinStraightLine(x, y, field))
                 {
-                    if (ChekingFreeSquariesinStraightLine(x, y, field))
-                    {
-                        PositionX = x;
-                        PositionY = y;
-                    }
-                    else
-                        throw new Exception("This piace doesn't walk through the others!");
-                }
-                else if(Math.Abs(PositionX - x) == Math.Abs(PositionY - y))
-                {
-                    if (ChekingFreeSquariesOnDiagonal(x, y, field))
-                    {
-                        PositionX = x;
-                        PositionY = y;
-                    }
-                    else
-                        throw new Exception("This piace doesn't walk through the others!");
+                    if (field[x, y] == false)
+                        eatingPiece = true;
+                    PositionX = x;
+                    PositionY = y;
                 }
                 else
-                    throw new Exception("Wrong move!");
-
+                    throw new Exception("This piace doesn't walk through the others!");
             }
-            catch (Exception ex)
+            else if (Math.Abs(PositionX - x) == Math.Abs(PositionY - y))
             {
-                Console.WriteLine(ex.Message);
+                if (ChekingFreeSquariesOnDiagonal(x, y, field))
+                {
+                    if (field[x, y] == false)
+                        eatingPiece = true;
+                    PositionX = x;
+                    PositionY = y;
+                }
+                else
+                    throw new Exception("This piace doesn't walk through the others!");
             }
+            else
+                throw new Exception("Wrong move!");
+
+
+            return eatingPiece;
         }
 
         public bool ChekingFreeSquariesOnDiagonal(int x, int y, bool[,] field)
@@ -125,8 +128,11 @@ namespace Chess.Figures.TypeOfFigures
 
         public override string ToString()
         {
-            return ($"Color: {Color} \n  Position X: {PositionX.ToString()} \n Position Y: {PositionY.ToString()} \n Being on the field: {BeingOnTheField.ToString()} \n");
+            return ($"Color: {Color} \n  Position X: {PositionX.ToString()} \n Position Y: {PositionY.ToString()} \n Being on the Field: {BeingOnTheField.ToString()} \n");
         }
+
+        public override bool Equals(object obj) => obj is Queen queen && Name == queen.Name && Color == queen.Color && PositionX == queen.PositionX && PositionY == queen.PositionY;
+
         public override int GetHashCode()
         {
             int hashCode = -833015500;
