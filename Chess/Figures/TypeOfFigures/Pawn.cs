@@ -17,6 +17,19 @@ namespace Chess.Figures.TypeOfFigures
             PositionY = positionY;
             BeingOnTheField = beingOnTheField;
         }
+
+
+
+        /// <summary>
+        /// A pawn move that is checked for the correct move if the pawn
+        /// </summary>
+        /// <param name="x"> Finish coordinat x</param>
+        /// <param name="y"> Finish coordinat y</param>
+        /// <param name="field"> Field for piace with bool value (true - free; false = not free)</param>
+        /// <returns> 
+        /// If the place that the pawn moved to was occupied (pawn is eating another piace) - true; 
+        /// If the place that the pawn moved to wasn't occupied (pawn isn't eating another piace) - false; 
+        /// </returns>
         public override bool GetStepOnField(int x, int y, bool[,] field)
         {
             bool eatingPiece = false;
@@ -39,8 +52,8 @@ namespace Chess.Figures.TypeOfFigures
                      else
                          throw new Exception("This piace doesn't take others on straight!");
                  }
-            else if (Math.Abs(PositionX - x) == 1 && ((PositionY - y == 1 && Color == "black")
-                                 || (PositionY - y == -1 && Color == "white")) && field[x, y] == false)
+            else if (Math.Abs(PositionX - x) == 1 && field[x, y] == false && ((PositionY - y == -1 && Color == "black") 
+                                 || (PositionY - y == 1 && Color == "white")) )
                  {
                      eatingPiece = true;
                      PositionX = x;
@@ -52,8 +65,16 @@ namespace Chess.Figures.TypeOfFigures
             return eatingPiece;
         }
 
-       
-
+        /// <summary>
+        /// Function for forbidding the pawn to walk through the pieces
+        /// </summary>
+        /// <param name="x"> Finish coordinat x</param>
+        /// <param name="y"> Finish coordinat y</param>
+        /// <param name="field"> Field for piace with bool value (true - free; false = not free)</param>
+        /// <returns> 
+        /// If the another piace isn't on the path - true; 
+        /// If the another piace is on the path - false; 
+        /// </returns>
         public bool ChekingFreeSquaries(int x, int y, bool[,] field)
         {
             bool result = true;

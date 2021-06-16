@@ -14,6 +14,16 @@ namespace Chess.Figures.TypeOfFigures
             PositionY = positionY;
             BeingOnTheField = beingOnTheField;
         }
+        /// <summary>
+        /// A Bishop move that is checked for the correct move if the pawn
+        /// </summary>
+        /// <param name="x"> Finish coordinat x</param>
+        /// <param name="y"> Finish coordinat y</param>
+        /// <param name="field"> Map for piace with bool value (true - free; false = not free)</param>
+        /// <returns> 
+        /// If the place that the Bishop moved to was occupied (Rook is eating another piace) - true; 
+        /// If the place that the Bishop moved to wasn't occupied (Rook isn't eating another piace) - false; 
+        /// </returns>
         public override bool GetStepOnField(int x, int y, bool[,] field)
         {
             bool eatingPiece = false;
@@ -37,6 +47,16 @@ namespace Chess.Figures.TypeOfFigures
             return eatingPiece;
         }
 
+        /// <summary>
+        /// Function for forbidding the Bishop to walk through the pieces
+        /// </summary>
+        /// <param name="x"> Finish coordinat x</param>
+        /// <param name="y"> Finish coordinat y</param>
+        /// <param name="field"> Field for piace with bool value (true - free; false = not free)</param>
+        /// <returns> 
+        /// If the another piace isn't on the path - true; 
+        /// If the another piace is on the path - false; 
+        /// </returns>
         public bool ChekingFreeSquaries(int x, int y, bool[,] field)
         {
             bool result = true;

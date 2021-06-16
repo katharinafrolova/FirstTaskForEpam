@@ -17,6 +17,17 @@ namespace Chess.Figures.TypeOfFigures
         }
 
 
+        /// <summary>
+        /// A Queen move that is checked for the correct move if the pawn
+        /// </summary>
+        /// <param name="x"> Finish coordinat x</param>
+        /// <param name="y"> Finish coordinat y</param>
+        /// <param name="field"> Map for piace with bool value (true - free; false = not free)</param>
+        /// <returns> 
+        /// If the place that the Queen moved to was occupied (Queen is eating another piace) - true; 
+        /// If the place that the Queen moved to wasn't occupied (Queen isn't eating another piace) - false; 
+        /// </returns>
+
         public override bool GetStepOnField(int x, int y, bool[,] field)
         {
             bool eatingPiece = false;
@@ -52,6 +63,16 @@ namespace Chess.Figures.TypeOfFigures
             return eatingPiece;
         }
 
+        /// <summary>
+        /// Function for forbidding the Queen to walk through the pieces on diagonal
+        /// </summary>
+        /// <param name="x"> Finish coordinat x</param>
+        /// <param name="y"> Finish coordinat y</param>
+        /// <param name="field"> Field for piace with bool value (true - free; false = not free)</param>
+        /// <returns> 
+        /// If the another piace isn't on the path - true; 
+        /// If the another piace is on the path - false; 
+        /// </returns>
         public bool ChekingFreeSquariesOnDiagonal(int x, int y, bool[,] field)
         {
             bool result = true;
@@ -80,10 +101,22 @@ namespace Chess.Figures.TypeOfFigures
                         j++;
                 }
             }
+            else
+                result = true;
 
             return result;
         }
 
+        /// <summary>
+        /// Function for forbidding the Queen to walk through the pieces in straight line
+        /// </summary>
+        /// <param name="x"> Finish coordinat x</param>
+        /// <param name="y"> Finish coordinat y</param>
+        /// <param name="field"> Field for piace with bool value (true - free; false = not free)</param>
+        /// <returns> 
+        /// If the another piace isn't on the path - true; 
+        /// If the another piace is on the path - false; 
+        /// </returns>
         public bool ChekingFreeSquariesinStraightLine(int x, int y, bool[,] field)
         {
             bool result = true;

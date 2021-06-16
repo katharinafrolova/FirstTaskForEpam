@@ -16,7 +16,8 @@ namespace Chess.Game
         {
             Name = name;
             ColorOfPlayersPiace = color;
-            AllStep = new List<string>();        }
+            AllStep = new List<string>();        
+        }
 
         public void AddStepInHistory(int x, int y, string name)
         {

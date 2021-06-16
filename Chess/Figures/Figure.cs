@@ -19,8 +19,5 @@ namespace Chess.Figures
             return this.MemberwiseClone();
         }
 
-        //public abstract int GetHashCode();
-        //public abstract string ToString();
-
     }
 }

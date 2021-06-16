@@ -16,8 +16,17 @@ namespace Chess.Figures
             BeingOnTheField = beingOnTheField;
         }
 
-        public King()
-        { }
+
+        /// <summary>
+        /// A King move that is checked for the correct move if the pawn
+        /// </summary>
+        /// <param name="x"> Finish coordinat x</param>
+        /// <param name="y"> Finish coordinat y</param>
+        /// <param name="field"> Map for piace with bool value (true - free; false = not free)</param>
+        /// <returns> 
+        /// If the place that the King moved to was occupied (King is eating another piace) - true; 
+        /// If the place that the King moved to wasn't occupied (King isn't eating another piace) - false; 
+        /// </returns>
         public override bool GetStepOnField(int x, int y, bool[,] field)
         {
             bool eatingPiece = false;
